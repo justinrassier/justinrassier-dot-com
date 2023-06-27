@@ -14,7 +14,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@justinrassier-dot-com/shared/todo/data-access": [
+        "libs/shared/todo/data-access/src/index.ts"
+      ],
+      "@justinrassier-dot-com/todo/feature": ["libs/todo/feature/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
