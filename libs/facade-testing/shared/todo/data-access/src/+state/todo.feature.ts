@@ -1,3 +1,11 @@
+import { inject } from '@angular/core';
+import {
+  AsyncState,
+  initialAsyncState,
+  loadedAsyncState,
+  loadingAsyncState,
+} from '@justinrassier-dot-com/shared/async-state/utility';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   createActionGroup,
   createFeature,
@@ -6,16 +14,8 @@ import {
   on,
   props,
 } from '@ngrx/store';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { inject } from '@angular/core';
-import { map, mergeMap, tap } from 'rxjs';
+import { map, mergeMap } from 'rxjs';
 import { TodoService } from '../todo.service';
-import {
-  AsyncState,
-  initialAsyncState,
-  loadedAsyncState,
-  loadingAsyncState,
-} from '@justinrassier-dot-com/shared/async-state/utility';
 
 export type Todo = {
   id: string;

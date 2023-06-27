@@ -15,13 +15,15 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@justinrassier-dot-com/facade-testing/shared/todo/data-access": [
+        "libs/facade-testing/shared/todo/data-access/src/index.ts"
+      ],
+      "@justinrassier-dot-com/facade-testing/todo/feature": [
+        "libs/facade-testing/todo/feature/src/index.ts"
+      ],
       "@justinrassier-dot-com/shared/async-state/utility": [
         "libs/shared/async-state/utility/src/index.ts"
-      ],
-      "@justinrassier-dot-com/shared/todo/data-access": [
-        "libs/shared/todo/data-access/src/index.ts"
-      ],
-      "@justinrassier-dot-com/todo/feature": ["libs/todo/feature/src/index.ts"]
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

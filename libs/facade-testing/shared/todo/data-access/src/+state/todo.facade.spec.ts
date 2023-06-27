@@ -8,7 +8,6 @@ import { provideState, provideStore } from '@ngrx/store';
 import { firstValueFrom } from 'rxjs';
 import { TodoFacade } from './todo.facade';
 import { todoEffects, todoFeature } from './todo.feature';
-import { AsyncStateLoaded } from '@justinrassier-dot-com/shared/async-state/utility';
 describe('TodoFacade', () => {
   let httpController: HttpTestingController;
   let facade: TodoFacade;

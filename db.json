@@ -8,7 +8,7 @@
     {
       "id": 2,
       "text": "Learn Nx",
-      "completed": false
+      "completed": true
     }
   ]
 }

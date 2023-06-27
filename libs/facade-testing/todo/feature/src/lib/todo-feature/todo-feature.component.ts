@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
-import { TodoFacade } from '@justinrassier-dot-com/shared/todo/data-access';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { TodoFacade } from '@justinrassier-dot-com/facade-testing/shared/todo/data-access';
 
 @Component({
   selector: 'justinrassier-dot-com-todo-feature',
