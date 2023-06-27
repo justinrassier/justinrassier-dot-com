@@ -5,8 +5,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],
   selector: 'justinrassier-dot-com-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  template: ` <router-outlet></router-outlet> `,
 })
 export class AppComponent {
   title = 'facade-testing';
