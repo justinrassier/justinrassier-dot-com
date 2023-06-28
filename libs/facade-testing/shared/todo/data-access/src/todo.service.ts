@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Todo } from './+state/todo.feature';
+import { retry } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TodoService {
@@ -10,7 +11,10 @@ export class TodoService {
   }
 
   markTodoAsCompleted(id: string) {
-    return this.#httpClient.patch(`/api/todos/${id}`, { completed: true });
+    // retry 3 times waiting 1 second between each retry
+    return this.#httpClient
+      .patch(`/api/todos/${id}`, { completed: true })
+      .pipe(retry(3));
   }
   markTodoAsIncomplete(id: string) {
     return this.#httpClient.patch(`/api/todos/${id}`, { completed: false });

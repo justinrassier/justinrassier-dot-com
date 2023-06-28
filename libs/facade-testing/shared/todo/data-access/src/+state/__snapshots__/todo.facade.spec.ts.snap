@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TodoFacade should get get the todos from the API 1`] = `
+[
+  {
+    "completed": false,
+    "id": "1",
+    "text": "Todo 1",
+  },
+]
+`;

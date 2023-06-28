@@ -14,7 +14,7 @@ import {
   on,
   props,
 } from '@ngrx/store';
-import { map, mergeMap } from 'rxjs';
+import { catchError, map, mergeMap, of } from 'rxjs';
 import { TodoService } from '../todo.service';
 
 export type Todo = {
@@ -34,10 +34,13 @@ export const TodoUIActions = createActionGroup({
   events: {
     'Load Todos': () => emptyProps(),
     'Load Todos Success': props<{ todos: Todo[] }>(),
+    'Load Todos Failure': () => emptyProps(),
     'Mark Todo Complete': props<{ id: string }>(),
     'Mark Todo Incomplete': props<{ id: string }>(),
     'Mark Todo Complete Success': props<{ id: string }>(),
+    'Mark Todo Complete Failure': props<{ id: string }>(),
     'Mark Todo Incomplete Success': props<{ id: string }>(),
+    'Mark Todo Incomplete Failure': props<{ id: string }>(),
   },
 });
 
@@ -69,6 +72,19 @@ export const todoFeature = createFeature({
         }),
       };
     }),
+    on(TodoUIActions.markTodoCompleteFailure, (state, { id }): TodoState => {
+      if (state.todos.type !== 'loaded') {
+        return state;
+      }
+      return {
+        ...state,
+        todos: loadedAsyncState({
+          data: state.todos.data.map((todo) =>
+            todo.id === id ? { ...todo, completed: false } : todo
+          ),
+        }),
+      };
+    }),
     on(TodoUIActions.markTodoIncomplete, (state, { id }): TodoState => {
       if (state.todos.type !== 'loaded') {
         return state;
@@ -92,9 +108,10 @@ const loadTodos$ = createEffect(
     return actions$.pipe(
       ofType(TodoUIActions.loadTodos),
       mergeMap(() =>
-        todoService
-          .loadTodos()
-          .pipe(map((todos) => TodoUIActions.loadTodosSuccess({ todos })))
+        todoService.loadTodos().pipe(
+          map((todos) => TodoUIActions.loadTodosSuccess({ todos })),
+          catchError(() => of(TodoUIActions.loadTodosFailure()))
+        )
       )
     );
   },
@@ -106,9 +123,10 @@ const markTodoComplete$ = createEffect(
     return actions$.pipe(
       ofType(TodoUIActions.markTodoComplete),
       mergeMap(({ id }) =>
-        todoService
-          .markTodoAsCompleted(id)
-          .pipe(map(() => TodoUIActions.markTodoCompleteSuccess({ id })))
+        todoService.markTodoAsCompleted(id).pipe(
+          map(() => TodoUIActions.markTodoCompleteSuccess({ id })),
+          catchError(() => of(TodoUIActions.markTodoCompleteFailure({ id })))
+        )
       )
     );
   },
