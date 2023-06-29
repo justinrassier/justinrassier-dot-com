@@ -1,10 +1,4 @@
 import { inject } from '@angular/core';
-import {
-  AsyncState,
-  initialAsyncState,
-  loadedAsyncState,
-  loadingAsyncState,
-} from '@justinrassier-dot-com/shared/async-state/utility';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   createActionGroup,
@@ -22,11 +16,13 @@ export type Todo = {
   text: string;
   completed: boolean;
 };
-interface TodoState {
-  todos: AsyncState<{ data: Todo[] }>;
+export interface TodoState {
+  todos: Todo[];
+  status: 'initial' | 'loading' | 'loaded' | 'error';
 }
 const initialState: TodoState = {
-  todos: initialAsyncState(),
+  todos: [],
+  status: 'initial',
 };
 
 export const TodoUIActions = createActionGroup({
@@ -48,60 +44,49 @@ export const todoFeature = createFeature({
   name: 'todo',
   reducer: createReducer(
     initialState,
-    on(TodoUIActions.loadTodos, (state) => ({
-      ...state,
-      todos: loadingAsyncState(),
-    })),
+    on(
+      TodoUIActions.loadTodos,
+      (state): TodoState => ({
+        ...state,
+        status: 'loading',
+      })
+    ),
     on(
       TodoUIActions.loadTodosSuccess,
       (state, { todos }): TodoState => ({
         ...state,
-        todos: loadedAsyncState({ data: todos }),
+        todos,
+        status: 'loaded',
       })
     ),
     on(TodoUIActions.markTodoComplete, (state, { id }): TodoState => {
-      if (state.todos.type !== 'loaded') {
-        return state;
-      }
       return {
         ...state,
-        todos: loadedAsyncState({
-          data: state.todos.data.map((todo) =>
-            todo.id === id ? { ...todo, completed: true } : todo
-          ),
-        }),
+        todos: state.todos.map((todo) =>
+          todo.id === id ? { ...todo, completed: true } : todo
+        ),
       };
     }),
     on(TodoUIActions.markTodoCompleteFailure, (state, { id }): TodoState => {
-      if (state.todos.type !== 'loaded') {
-        return state;
-      }
       return {
         ...state,
-        todos: loadedAsyncState({
-          data: state.todos.data.map((todo) =>
-            todo.id === id ? { ...todo, completed: false } : todo
-          ),
-        }),
+        todos: state.todos.map((todo) =>
+          todo.id === id ? { ...todo, completed: false } : todo
+        ),
       };
     }),
     on(TodoUIActions.markTodoIncomplete, (state, { id }): TodoState => {
-      if (state.todos.type !== 'loaded') {
-        return state;
-      }
       return {
         ...state,
-        todos: loadedAsyncState({
-          data: state.todos.data.map((todo) =>
-            todo.id === id ? { ...todo, completed: false } : todo
-          ),
-        }),
+        todos: state.todos.map((todo) =>
+          todo.id === id ? { ...todo, completed: false } : todo
+        ),
       };
     })
   ),
 });
 
-export const { selectTodos } = todoFeature;
+export const { selectTodoState } = todoFeature;
 
 const loadTodos$ = createEffect(
   (actions$ = inject(Actions), todoService = inject(TodoService)) => {

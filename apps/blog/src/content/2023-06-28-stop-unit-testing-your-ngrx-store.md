@@ -1,4 +1,10 @@
-# Stop Unit Testing your NgRx Store and Start Facade Testing
+---
+title: Stop Unit Testing Your NgRx Store
+description: 'Facade testing'
+published: false
+slug: 2023-06-28-stop-unit-testing-your-ngrx-store
+publishedDate: '2023-06-28 02:00 PM CST'
+---
 
 We are all tired of the debate around unit testing vs integration testing; both have their place. But I'm here to tell you that unit testing your NgRx store is not worth it.😱
 
@@ -17,34 +23,12 @@ export type Todo = {
   completed: boolean;
 };
 interface TodoState {
-  todos: AsyncState<{ data: Todo[] }>;
+  todos:  data: Todo[] >;
+  status: 'loading' | 'loaded' | 'error';
 }
 ```
 
-Before we go any further, a quick diversion into the `AsyncState` type. This is a common pattern I use to handle asynchronous data in my application. This is just a wrapping type that creates a discriminated union with the following variants
-
-```typescript
-export type AsyncStateInitial = {
-  type: 'initial';
-};
-
-export type AsyncStateLoading = {
-  type: 'loading';
-};
-
-export type AsyncStateError = {
-  type: 'error';
-};
-
-export type AsyncStateLoaded = {
-  type: 'loaded';
-  data: Todo[];
-};
-```
-
-You will see how this is used more later, but keeping state in a discriminated union like this makes it impossible to be both in a "loading" and "loaded" state, which can happen if you are just updating `loading` and `error` boolean on your state. There is a little more boilerplate that comes with this approach, but the safety and ergonomics of TypeScript type narrowing are well worth it in my opinion.
-
-Alright, back to the app. Given the state above, your actions may look something like this:
+Given the state above, your actions may look something like this:
 
 ```typescript
 export const TodoUIActions = createActionGroup({
@@ -93,7 +77,8 @@ This is basically the most straight-forward type of effect you will write in a C
 it('should test something useful', () => {
   actions$ = hot('a|', { a: { type: TodoUIActions.loadTodos.type } });
   const todoService: Partial<TodoService> = {
-    loadTodos: () => cold('b|', { b: [{ id: '1', text: 'Todo 1', completed: false }] }),
+    loadTodos: () =>
+      cold('b|', { b: [{ id: '1', text: 'Todo 1', completed: false }] }),
   };
 
   const expected = hot('b|', {
@@ -103,7 +88,9 @@ it('should test something useful', () => {
     },
   });
 
-  expect(todoEffects.loadTodos$(actions$, todoService as TodoService)).toBeObservable(expected);
+  expect(
+    todoEffects.loadTodos$(actions$, todoService as TodoService)
+  ).toBeObservable(expected);
 });
 ```
 
@@ -134,7 +121,7 @@ Our `TodoFacade` would look like this:
 @Injectable({ providedIn: 'root' })
 export class TodoFacade {
   #store = inject(Store);
-  todos$ = this.#store.select(selectTodos);
+  todoState$ = this.#store.select(selectTodoState);
   loadTodos() {
     this.#store.dispatch(TodoUIActions.loadTodos());
   }
@@ -163,14 +150,20 @@ describe('TodoFacade', () => {
     // Provides the entire store to the testing modules
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TodoFacade, provideStore(), provideState(todoFeature), provideEffects(todoEffects)],
+      providers: [
+        TodoFacade,
+        provideStore(),
+        provideState(todoFeature),
+        provideEffects(todoEffects),
+      ],
     });
     httpController = TestBed.inject(HttpTestingController);
     facade = TestBed.inject(TodoFacade);
   });
 
   afterEach(() => {
-    // Verifies any unmatched HTTP calls will cause your tests to fail. This makes sure all HTTP calls are accounted for
+    // Verifies any unmatched HTTP calls will cause your tests to fail.
+    // This makes sure all HTTP calls are accounted for
     httpController.verify();
   });
 
@@ -179,27 +172,26 @@ describe('TodoFacade', () => {
     facade.loadTodos();
 
     // Ge the state out of the store without dealing with subscriptions and callbacks
-    let todoState = await firstValueFrom(facade.todos$);
+    let todoState = await firstValueFrom(facade.todoState$);
 
     // This verifies that immediately after firing our action,
-    // the reducer correctly updated the state to the loading variant of the discriminated union
-    expect(todoState.type).toEqual('loading');
+    // the reducer correctly updated the status to "loading"
+    expect(todoState.status).toEqual('loading');
 
     // Now we can test that our action got all the way to making a real HTTP call to the expected endpoint
     // we can flush real HTTP status codes
-    httpController.expectOne('/api/todos').flush([{ id: '1', text: 'Todo 1', completed: false }]);
+    httpController
+      .expectOne('/api/todos')
+      .flush([{ id: '1', text: 'Todo 1', completed: false }]);
 
-    // get the newly updated state after the successful HTTP call
-    todoState = await firstValueFrom(facade.todos$);
+    todoState = await firstValueFrom(facade.todoState$);
 
-    // Verifies that after our effect finishes, the reducer picks up the "success"
-    // action and updates the state. Provides the type narrowing below
-    if (todoState.type !== 'loaded') {
-      throw new Error('Todo state is not loaded');
-    }
+    // Verifies that after our effect finishes, the reducer picks up the
+    // "success" action and updates the state. Provides the type narrowing below
+    expect(todoState.status).toEqual('loaded');
 
     // Use Jest snapshots to better capture the expected structure of your state
-    expect(todoState.data).toMatchSnapshot();
+    expect(todoState.todos).toMatchSnapshot();
   });
 });
 ```
@@ -214,70 +206,69 @@ it('should mark the todo as completed via the API', async () => {
   facade.loadTodos();
 
   // flush the response from the API with a single todo that is not yet completed
-  httpController.expectOne('/api/todos').flush([{ id: '1', text: 'Todo 1', completed: false }]);
+  httpController
+    .expectOne('/api/todos')
+    .flush([{ id: '1', text: 'Todo 1', completed: false }]);
 
   // use the facade to mark the todo as completed
   facade.markTodoAsCompleted('1');
 
   // Make sure that our store was eagerly updated, even before the API call finished
-  const todoState = await firstValueFrom(facade.todos$);
-  if (todoState.type !== 'loaded') {
-    throw new Error('Todo state is not loaded');
-  }
-  expect(todoState.data[0].completed).toEqual(true);
+  const todoState = await firstValueFrom(facade.todoState$);
+  expect(todoState.todos[0].completed).toEqual(true);
 
   // verify that the HTTP call was made to the correct endpoint
   httpController.expectOne('/api/todos/1').flush(201);
 });
 
 // Same as the previous spec, but in reverse
-it('should mark the todo as incomplete via the API', async () => {
+it('should mark the todo as completed via the API', async () => {
+  // load the todos like above
   facade.loadTodos();
 
-  httpController.expectOne('/api/todos').flush([{ id: '1', text: 'Todo 1', completed: true }]);
+  // flush the response from the API with a single todo that is not yet completed
+  httpController
+    .expectOne('/api/todos')
+    .flush([{ id: '1', text: 'Todo 1', completed: true }]);
 
-  facade.markTodoAsIncomplete('1');
+  // use the facade to mark the todo as incomplete
+  facade.markTodoAsCompleted('1');
 
-  // Assert - the todo was eagerly updated
-  const todoState = await firstValueFrom(facade.todos$);
-  if (todoState.type !== 'loaded') {
-    throw new Error('Todo state is not loaded');
-  }
-  expect(todoState.data[0].completed).toEqual(false);
+  // Make sure that our store was eagerly updated, even before the API call finished
+  const todoState = await firstValueFrom(facade.todoState$);
+  expect(todoState.todos[0].completed).toEqual(false);
 
-  // Assert -the todo was updated via the API
+  // verify that the HTTP call was made to the correct endpoint
   httpController.expectOne('/api/todos/1').flush(201);
 });
 ```
 
-Alright, what about something a bit more complicated. Our logic does an optimistic update to the store when a user checks the todo off. What happens if our API fails? Can we roll back that update? Absolutely! And actually the test is almost the exact same
+Alright, what about something a bit more complicated. Our logic does an optimistic update to the store when a user checks the todo off. What happens if our API fails? Can we test rolling back that update to the store? Absolutely! And actually the test is almost the exact same
 
 ```typescript
 it('should uncheck the todo if the API call fails', async () => {
   facade.loadTodos();
   // flush the response from the API with a single todo that is not yet completed
-  httpController.expectOne('/api/todos').flush([{ id: '1', text: 'Todo 1', completed: false }]);
+  httpController
+    .expectOne('/api/todos')
+    .flush([{ id: '1', text: 'Todo 1', completed: false }]);
 
   // use the facade to mark the todo as completed
   facade.markTodoAsCompleted('1');
 
   // Make sure that our store was eagerly updated, even before the API call finished
-  let todoState = await firstValueFrom(facade.todos$);
-  if (todoState.type !== 'loaded') {
-    throw new Error('Todo state is not loaded');
-  }
+  let todoState = await firstValueFrom(facade.todoState$);
 
-  expect(todoState.data[0].completed).toEqual(true);
+  expect(todoState.todos[0].completed).toEqual(true);
 
   //  flush an error instead of a success
-  httpController.expectOne('/api/todos/1').flush(null, { status: 500, statusText: 'Internal Server Error' });
+  httpController
+    .expectOne('/api/todos/1')
+    .flush(null, { status: 500, statusText: 'Internal Server Error' });
 
   // Make sure the todo was set back to unchecked
-  todoState = await firstValueFrom(facade.todos$);
-  if (todoState.type !== 'loaded') {
-    throw new Error('Todo state is not loaded - Should not get here');
-  }
-  expect(todoState.data[0].completed).toEqual(false);
+  todoState = await firstValueFrom(facade.todoState$);
+  expect(todoState.todos[0].completed).toEqual(false);
 });
 ```
 
@@ -287,31 +278,36 @@ Alright one last one. What if you want to test that your HTTP call reties 3 time
 it('should uncheck the todo if the API call fails after 3 attempts', async () => {
   facade.loadTodos();
   // flush the response from the API with a single todo that is not yet completed
-  httpController.expectOne('/api/todos').flush([{ id: '1', text: 'Todo 1', completed: false }]);
+  httpController
+    .expectOne('/api/todos')
+    .flush([{ id: '1', text: 'Todo 1', completed: false }]);
 
   // use the facade to mark the todo as completed
   facade.markTodoAsCompleted('1');
 
   // Make sure that our store was eagerly updated, even before the API call finished
-  let todoState = await firstValueFrom(facade.todos$);
-  if (todoState.type !== 'loaded') {
-    throw new Error('Todo state is not loaded');
-  }
+  let todoState = await firstValueFrom(facade.todoState$);
 
-  expect(todoState.data[0].completed).toEqual(true);
+  expect(todoState.todos[0].completed).toEqual(true);
 
-  //  flush an error instead of a success 4 total times because the service does a `retry(3)`
-  httpController.expectOne('/api/todos/1').flush(null, { status: 500, statusText: 'Internal Server Error' });
-  httpController.expectOne('/api/todos/1').flush(null, { status: 500, statusText: 'Internal Server Error' });
-  httpController.expectOne('/api/todos/1').flush(null, { status: 500, statusText: 'Internal Server Error' });
-  httpController.expectOne('/api/todos/1').flush(null, { status: 500, statusText: 'Internal Server Error' });
+  //  flush an error instead of a success 3 times as we expect the HTTP call to be retried 3 times
+  httpController
+    .expectOne('/api/todos/1')
+    .flush(null, { status: 500, statusText: 'Internal Server Error' });
+  httpController
+    .expectOne('/api/todos/1')
+    .flush(null, { status: 500, statusText: 'Internal Server Error' });
+  httpController
+    .expectOne('/api/todos/1')
+    .flush(null, { status: 500, statusText: 'Internal Server Error' });
+  httpController
+    .expectOne('/api/todos/1')
+    .flush(null, { status: 500, statusText: 'Internal Server Error' });
 
   // Make sure the todo was set back to unchecked
-  todoState = await firstValueFrom(facade.todos$);
-  if (todoState.type !== 'loaded') {
-    throw new Error('Todo state is not loaded - Should not get here');
-  }
-  expect(todoState.data[0].completed).toEqual(false);
+  todoState = await firstValueFrom(facade.todoState$);
+
+  expect(todoState.todos[0].completed).toEqual(false);
 });
 ```
 
@@ -324,14 +320,18 @@ As mentioned in the specs above, the beauty of the facade pattern is that you no
   imports: [NgIf, NgFor, AsyncPipe, NgClass],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="todoFacade.todos$ | async as todos">
+    <ng-container *ngIf="todoFacade.todoState$ | async as todoState">
       <div class="p-4 ">
         <h1>Todos</h1>
-        <div *ngIf="todos.type === 'loading'">Loading...</div>
-        <ul *ngIf="todos.type === 'loaded'">
-          <li *ngFor="let todo of todos.data">
+        <div *ngIf="todoState.status === 'loading'">Loading...</div>
+        <ul *ngIf="todoState.status === 'loaded'">
+          <li *ngFor="let todo of todoState.todos">
             <div class="flex gap-2">
-              <input type="checkbox" [checked]="todo.completed" (change)="onChange($event, todo.id)" />
+              <input
+                type="checkbox"
+                [checked]="todo.completed"
+                (change)="onChange($event, todo.id)"
+              />
               <span
                 [ngClass]="{
                   'line-through': todo.completed,
@@ -366,7 +366,7 @@ export class TodoFeatureComponent {
 
 There is almost nothing here. I would argue that that it is mostly a waste of time to spend any time trying to test this component. I mean, all you are really doing at that point is testing that Angular can handle rendering a template. I'm pretty sure Angular doesn't need my test to verify that. Because of this, you end up with something that can approach e2e level of coverage and confidence without ever spinning up a headless browser.
 
-Of course a todo app isn't very complicated. But this pattern scales surprisingly well. NgRx is an amazing library that manages the complexity of business logic and state management. When things do get more complicated, utilizing the [Component Store](https://ngrx.io/guide/component-store) and a similar approach to testing can once again keep your from filling up your component with messy code.
+Of course a todo app isn't very complicated. But this pattern scales surprisingly well. NgRx is an amazing library that manages the complexity of business logic and state management. When things do get more complicated, utilizing the [Component Store](https://ngrx.io/guide/component-store) and a similar integration test approach can once again keep your from filling up your component with messy code.
 
 ## Summary
 

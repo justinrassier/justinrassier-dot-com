@@ -1,11 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { TodoUIActions, selectTodos } from './todo.feature';
+import { TodoUIActions, selectTodoState } from './todo.feature';
 
 @Injectable({ providedIn: 'root' })
 export class TodoFacade {
   #store = inject(Store);
-  todos$ = this.#store.select(selectTodos);
+  todoState$ = this.#store.select(selectTodoState);
   loadTodos() {
     this.#store.dispatch(TodoUIActions.loadTodos());
   }

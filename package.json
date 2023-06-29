@@ -52,6 +52,7 @@
     "@nx/web": "16.4.0",
     "@nx/workspace": "16.4.0",
     "@schematics/angular": "~16.1.0",
+    "@tailwindcss/typography": "^0.5.9",
     "@types/jest": "^29.4.0",
     "@types/node": "16.11.7",
     "@types/ramda": "^0.29.2",

@@ -8,12 +8,12 @@ import { TodoFacade } from '@justinrassier-dot-com/facade-testing/shared/todo/da
   imports: [NgIf, NgFor, AsyncPipe, NgClass],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="todoFacade.todos$ | async as todos">
+    <ng-container *ngIf="todoFacade.todoState$ | async as todoState">
       <div class="p-4 ">
         <h1>Todos</h1>
-        <div *ngIf="todos.type === 'loading'">Loading...</div>
-        <ul *ngIf="todos.type === 'loaded'">
-          <li *ngFor="let todo of todos.data">
+        <div *ngIf="todoState.status === 'loading'">Loading...</div>
+        <ul *ngIf="todoState.status === 'loaded'">
+          <li *ngFor="let todo of todoState.todos">
             <div class="flex gap-2">
               <input
                 type="checkbox"

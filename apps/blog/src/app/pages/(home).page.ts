@@ -1,11 +1,6 @@
-import { Component } from '@angular/core';
+import { RouteMeta } from '@analogjs/router';
 
-import { AnalogWelcomeComponent } from './analog-welcome.component';
-
-@Component({
-  selector: 'blog-home',
-  standalone: true,
-  imports: [AnalogWelcomeComponent],
-  template: ` <blog-analog-welcome /> `,
-})
-export default class HomeComponent {}
+export const routeMeta: RouteMeta = {
+  redirectTo: '/blog',
+  pathMatch: 'full',
+};
