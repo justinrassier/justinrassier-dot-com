@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "build:blog": "nx build blog",
     "dev": "run-p client server",
     "client": " nx serve facade-testing",
     "server": "json-server --watch db.json"
