@@ -1,9 +1,9 @@
 ---
 title: Use Discriminated Unions to Represent Your State
-description: 'Discrimianted unions to represent NgRx state'
+description: 'Discriminated unions to represent NgRx state'
 published: false
 slug: 2023-07-02-use-discriminated-unions-to-represent-your-state
-publishedDate: '2023-07-02 02:00 PM CST'
+publishedDate: '2023-07-02'
 ---
 
 How you represent your state inside of your store is an important consideration. One of the principles that I like to follow is to [make impossible states impossible](https://www.youtube.com/watch?v=IcgmSRJHu_8). This is a concept that is inspired by the FP, and in particular [Elm](https://elm-lang.org) community.

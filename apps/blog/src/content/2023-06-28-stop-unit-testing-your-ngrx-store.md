@@ -3,7 +3,7 @@ title: Stop Unit Testing Your NgRx Store
 description: 'Facade testing'
 published: false
 slug: 2023-06-28-stop-unit-testing-your-ngrx-store
-publishedDate: '2023-06-28 02:00 PM CST'
+publishedDate: '2023-06-28'
 ---
 
 We are all tired of the debate around unit testing vs integration testing; both have their place. But I'm here to tell you that unit testing your NgRx store is not worth it.😱
