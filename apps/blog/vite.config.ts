@@ -22,8 +22,12 @@ export default defineConfig(({ mode }) => {
           routes: async () => [
             '/',
             '/blog',
+            '/api/rss.xml',
             ...posts.map((post) => `/blog/posts/${post.replace('.md', '')}`),
           ],
+        },
+        nitro: {
+          logLevel: 3,
         },
       }),
       tsConfigPaths({

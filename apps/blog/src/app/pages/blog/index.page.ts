@@ -11,6 +11,4 @@ import { injectPosts } from '../../data/posts';
 })
 export default class BlogComponent {
   posts = injectPosts();
-
-  constructor() {}
 }
