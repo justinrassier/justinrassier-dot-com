@@ -2,8 +2,7 @@
 
 import analog from '@analogjs/platform';
 import * as fs from 'fs';
-import { defineConfig, splitVendorChunkPlugin } from 'vite';
-import tsConfigPaths from 'vite-tsconfig-paths';
+import { defineConfig } from 'vite';
 
 const posts = fs.readdirSync(__dirname + '/src/content');
 
@@ -30,10 +29,10 @@ export default defineConfig(({ mode }) => {
           logLevel: 3,
         },
       }),
-      tsConfigPaths({
-        root: '../../',
-      }),
-      splitVendorChunkPlugin(),
+      // tsConfigPaths({
+      //   root: '../../',
+      // }),
+      // splitVendorChunkPlugin(),
     ],
     test: {
       globals: true,

@@ -8,9 +8,9 @@
       "executor": "@nx/vite:build",
       "outputs": [
         "{options.outputPath}",
-        "dist/apps/blog/.nitro",
-        "dist/apps/blog/ssr",
-        "dist/apps/blog/analog"
+        "{workspaceRoot}/dist/apps/blog/.nitro",
+        "{workspaceRoot}/dist/apps/blog/ssr",
+        "{workspaceRoot}/dist/apps/blog/analog"
       ],
       "options": {
         "main": "apps/blog/src/main.ts",
@@ -52,7 +52,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/blog/**/*.ts", "apps/blog/**/*.html"]
@@ -60,7 +60,7 @@
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["apps/blog/coverage"]
+      "outputs": ["{projectRoot}/coverage"]
     }
   },
   "tags": []

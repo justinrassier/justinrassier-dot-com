@@ -3,7 +3,7 @@ title: Visualize Your Tests With Snapshot Serializers
 description: 'Use snapshot serializers to visualize your test snapshots'
 published: false
 slug: 2023-07-20-visualize-you-tests-with-snapshot-serializers
-publishedDate: '2023-07-02'
+publishedDate: '2023-07-20'
 ---
 
 At this point, [Jest snapshot testing](https://jestjs.io/docs/snapshot-testing) is a well known tool for efficiently testing the result of some complex object in your tests. The problem with them is that they can get to be pretty clumsy to work with, especially if you want to utilize inline snapshots.
