@@ -24,8 +24,9 @@
     "@angular/platform-browser-dynamic": "17.0.3",
     "@angular/platform-server": "17.0.3",
     "@angular/router": "17.0.3",
-    "@ngrx/effects": "^16.0.1",
-    "@ngrx/store": "^16.0.1",
+    "@ngrx/effects": "17.1.0",
+    "@ngrx/signals": "^17.1.0",
+    "@ngrx/store": "17.1.0",
     "@nx/angular": "17.1.2",
     "front-matter": "^4.0.2",
     "marked": "^5.0.2",
@@ -49,7 +50,7 @@
     "@angular/cli": "~17.0.0",
     "@angular/compiler-cli": "17.0.3",
     "@angular/language-service": "17.0.3",
-    "@ngrx/eslint-plugin": "^16.0.1",
+    "@ngrx/eslint-plugin": "17.1.0",
     "@nx/cypress": "17.1.2",
     "@nx/eslint": "17.1.2",
     "@nx/eslint-plugin": "17.1.2",
@@ -90,4 +91,3 @@
     "vitest": "^0.32.0"
   }
 }
-

@@ -1,20 +1,53 @@
-import { Injectable, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { TodoUIActions, selectTodoState } from './todo.feature';
+import { Injectable, computed, inject } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { pipe, switchMap, tap } from 'rxjs';
+import { TodoService } from '../todo.service';
+import { TodoState } from './todo.feature';
+
+export const TodoSignalStore = signalStore(
+  withState<TodoState>({
+    todos: [],
+    status: 'initial',
+  }),
+  withMethods((store, todoService = inject(TodoService)) => ({
+    load: rxMethod<void>(
+      pipe(
+        tap(() => {
+          patchState(store, { status: 'loading' });
+        }),
+        switchMap(() => todoService.loadTodos()),
+        tap((todos) => {
+          patchState(store, {
+            status: 'loaded',
+            todos,
+          });
+        })
+      )
+    ),
+  })),
+  withComputed((store) => ({
+    todoState: computed(() => {
+      return {
+        todos: store.todos(),
+        status: store.status(),
+      };
+    }),
+  }))
+);
 
 @Injectable({ providedIn: 'root' })
 export class TodoFacade {
-  #store = inject(Store);
-  todoState$ = this.#store.select(selectTodoState);
+  #signalStore = inject(TodoSignalStore);
+  todoState$ = toObservable(this.#signalStore.todoState);
   loadTodos() {
-    this.#store.dispatch(TodoUIActions.loadTodos());
-  }
-
-  markTodoAsCompleted(id: string) {
-    this.#store.dispatch(TodoUIActions.markTodoComplete({ id }));
-  }
-
-  markTodoAsIncomplete(id: string) {
-    this.#store.dispatch(TodoUIActions.markTodoIncomplete({ id }));
+    this.#signalStore.load();
   }
 }
