@@ -32,10 +32,6 @@ export default defineConfig(({ mode }) => {
           logLevel: 3,
         },
       }),
-      // tsConfigPaths({
-      //   root: '../../',
-      // }),
-      // splitVendorChunkPlugin(),
     ],
     test: {
       globals: true,
