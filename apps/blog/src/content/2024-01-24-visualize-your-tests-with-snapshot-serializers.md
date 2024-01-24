@@ -23,7 +23,7 @@ it('should get get the todos from the API', async () => {
   expect(todoState.status).toEqual('loading');
 
   // Now we can test that our action got all the way to making a real HTTP call to the expected endpoint
-  // we can fulsh real HTTP status codes
+  // we can flush real HTTP status codes
   httpController
     .expectOne('/api/todos')
     .flush([{ id: '1', text: 'Todo 1', completed: false }]);
