@@ -1,18 +1,14 @@
 ---
 title: Visualize Your Tests With Snapshot Serializers
 description: 'Use snapshot serializers to visualize your test snapshots'
-published: false
+published: true
 slug: 2024-01-24-visualize-you-tests-with-snapshot-serializers
 publishedDate: '2024-01-24'
 ---
 
-At this point, [Jest snapshot testing](https://jestjs.io/docs/snapshot-testing)
-is a well known tool for efficiently testing the result of some complex object
-in your tests. The problem with them is that they can get to be pretty clumsy to
-work with, especially if you want to utilize inline snapshots.
+At this point, [Jest snapshot testing](https://jestjs.io/docs/snapshot-testing) is a well known tool for efficiently testing the result of some complex object in your tests. The problem with them is that they can get to be pretty clumsy to work with, especially if you want to utilize inline snapshots.
 
-Here is a simple test that loads ups todos from an API and spits out the whole
-state in an inline snapshot:
+Here is a simple test that loads ups todos from an API and spits out the whole state in an inline snapshot:
 
 ```typescript
 it('should get get the todos from the API', async () => {
@@ -56,9 +52,7 @@ it('should get get the todos from the API', async () => {
 });
 ```
 
-This isn't too bad. The end result is something that you can relatively easily
-verify that everything looks correct. But what if you had a test that loaded up
-10 todo items, mainpulate them, then check the state at each point.
+This isn't too bad. The end result is something that you can relatively easily verify that everything looks correct. But what if you had a test that loaded up 10 todo items, manipulate them, then check the state at each point.
 
 ```typescript
 it('should mark the todo as completed via the API', async () => {
@@ -151,18 +145,13 @@ it('should mark the todo as completed via the API', async () => {
 });
 ```
 
-That's getting pretty ugly right? This is a simple model, so you could see how
-anything more complicated would just be unmanageable.
+That's getting pretty ugly right? This is a simple model, so you could see how anything more complicated would just be unmanageable.
 
 ## Custom Snapshot Serializers
 
-Wouldn't it be nice to take that JSON blob and just visualize it like it would
-be in your UI? Well we don't have the DOM here, but what if we could make a
-little ASCII representation of the state so that it removes all the noise and
-let's you just quickly visualize your state?
+Wouldn't it be nice to take that JSON blob and just visualize it like it would be in your UI? Well we don't have the DOM here, but what if we could make a little ASCII representation of the state so that it removes all the noise and let's you just quickly visualize your state?
 
-All you have to do to define your own way of serializing for snapshot testing is
-to throw something like this at the top of your spec file:
+All you have to do to define your own way of serializing for snapshot testing is to throw something like this at the top of your spec file:
 
 ```typescript
 expect.addSnapshotSerializer({
@@ -188,9 +177,7 @@ expect.addSnapshotSerializer({
 });
 ```
 
-That's it. You define a `test` for Jest to know if it should use your special
-serialization logic, and if it matches, it uses it instead of the default
-serializer.
+That's it. You define a `test` for Jest to know if it should use your special serialization logic, and if it matches, it uses it instead of the default serializer.
 
 So now our output of our inline snapshot looks like this:
 
@@ -209,14 +196,11 @@ expect(updatedTodoState).toMatchInlineSnapshot(`
     `);
 ```
 
-This is much easier at a glance to see if what modifications you made to your
-state actually are reflected in the serialized output!
+This is much easier at a glance to see if what modifications you made to your state actually are reflected in the serialized output!
 
 ## Get Creative
 
-This is a simple example, but don't think this means it only works for simple
-state representations. I have used this to represent complex nested tabbed
-layout in the UI
+This is a simple example, but don't think this means it only works for simple state representations. I have used this to represent complex nested tabbed layout in the UI
 
 ```typescript
 row
@@ -226,12 +210,6 @@ row
 | [Module4*]  (50%)
 ```
 
-This may be a little cryptic, but this is a serialized layout of our
-dashboard-like layout engine at my work. The result is a nested grid layout with
-tabs,resizable panels, active module tracking, and more. This JSON
-representation of this would be roughly 50-100. But in a glance, I can verify
-that a modification to the updated things as I would expect. Making our layout
-engine fully testable without a UI.
+This may be a little cryptic, but this is a serialized layout of our dashboard-like layout engine at my work. The result is a nested grid layout with tabs,resizable panels, active module tracking, and more. This JSON representation of this would be roughly 50-100. But in a glance, I can verify that a modification to the updated things as I would expect. Making our layout engine fully testable without a UI.
 
-So get creative with how you can represent your state and start visualizing your
-application right inside of your tests!
+So get creative with how you can represent your state and start visualizing your application right inside of your tests!
