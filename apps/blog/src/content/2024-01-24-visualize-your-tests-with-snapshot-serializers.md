@@ -210,6 +210,6 @@ row
 | [Module4*]  (50%)
 ```
 
-This may be a little cryptic, but this is a serialized layout of our dashboard-like layout engine at my work. The result is a nested grid layout with tabs,resizable panels, active module tracking, and more. This JSON representation of this would be roughly 50-100. But in a glance, I can verify that a modification to the updated things as I would expect. Making our layout engine fully testable without a UI.
+This may be a little cryptic, but this is a serialized layout of our dashboard-like layout engine at my work. The result is a nested grid layout with tabs,resizable panels, active module tracking, and more. This JSON representation of this would be roughly 50-100 lines. But in a glance, I can verify that a modification to the updated things as I would expect. Making our layout engine fully testable without a UI.
 
 So get creative with how you can represent your state and start visualizing your application right inside of your tests!
