@@ -2,7 +2,7 @@
 title: Visualize Your Tests With Snapshot Serializers
 description: 'Use snapshot serializers to visualize your test snapshots'
 published: true
-slug: 2024-01-24-visualize-you-tests-with-snapshot-serializers
+slug: 2024-01-24-visualize-your-tests-with-snapshot-serializers
 publishedDate: '2024-01-24'
 ---
 
