@@ -1,9 +1,9 @@
 ---
-title: I Think I May Have Started M yRuby on Rails Arc
+title: I Think I May Have Started My Ruby on Rails Arc ... In 2024
 description: 'I am weirdly into Rubo on Rails right now'
-published: false
-slug: 2024-02-14-i-think-i-have-started-my-ror-arc
-publishedDate: '2024-02-14'
+published: true
+slug: 2024-02-14-i-think-i-have-started-my-ror-arc-in-2024
+publishedDate: '2024-03-01'
 ---
 
 If you would have asked me a few months ago that I would have gotten really into Ruby on Rails starting in 2024, I probably would have laughed in your face. I mean I don't even like the language (although it is growing a little on me). Don't get me wrong, I don't think it's bad if you like Ruby; the language just doesn't value the things I've come to value in a programming language.
