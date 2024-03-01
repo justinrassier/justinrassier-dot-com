@@ -21,4 +21,4 @@ I'm not here to sell you on the virtues of Neovim, and why I'm better than you. 
 - An "explain this code" plugin that takes your highlighted code, hits the Open AI API, and returns a summary of what the code does in a popup
 - Custom test runner with inline exmarks for test results - This one I use every single day as it makes my test life so much better. This was inspired by a [video tutorial from TJ DeVries](https://www.youtube.com/watch?v=HlfjpstqXwE)
 
-So go get creative. Make something that works for how yoru brain operates. Scratch your own itch. I spent too many years assuming I had to conform to how everyone else worked, instead of having fun finding what works for me.
+So go get creative. Make something that works for how your brain operates. Scratch your own itch. I spent too many years assuming I had to conform to how everyone else worked, instead of having fun finding what works for me.
