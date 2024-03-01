@@ -2,7 +2,7 @@
 title: I Think I May Have Started My Ruby on Rails Arc ... In 2024
 description: 'I am weirdly into Rubo on Rails right now'
 published: true
-slug: 2024-02-14-i-think-i-have-started-my-ror-arc-in-2024
+slug: 2024-03-01-i-think-i-have-started-my-ror-arc-in-2024
 publishedDate: '2024-03-01'
 ---
 
