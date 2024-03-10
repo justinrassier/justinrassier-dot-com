@@ -1,9 +1,9 @@
 ---
 title: Scratch Your Own Itch
 description: 'Scratch your own itch and make things that work for you'
-published: false
-slug: 2024-02-21-scratch-your-own-itch
-publishedDate: '2024-02-21'
+published: true
+slug: 2024-03-10-scratch-your-own-itch
+publishedDate: '2024-03-10'
 ---
 
 I have had a weird inverse form of impostor syndrome for most of my career. I have been coding for over a decade, yet when it came to making something that I thought would be cool to have, whether that be a plugin in my editor or even a tool to do some personal task, I would freeze. I would tell myself
