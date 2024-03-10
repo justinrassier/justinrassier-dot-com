@@ -8,7 +8,7 @@ publishedDate: '2024-03-10'
 
 I have had a weird inverse form of impostor syndrome for most of my career. I have been coding for over a decade, yet when it came to making something that I thought would be cool to have, whether that be a plugin in my editor or even a tool to do some personal task, I would freeze. I would tell myself
 
-> Surely if this was the right way to do something, it would already exist. I must be wrong about how in what I want to do.
+> Surely if this was the right way to do something, it would already exist. I must be wrong with what I want to do.
 
 Odd right? It's sort of counter to the normal narrative you hear about the developer mindset. This all changed when I started to use Neovim (oh yeah, I use Neovim BTW)
 
