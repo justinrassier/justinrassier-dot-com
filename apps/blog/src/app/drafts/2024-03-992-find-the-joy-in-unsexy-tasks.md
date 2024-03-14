@@ -2,8 +2,8 @@
 title: Find the Joy in Unsexy Tasks
 description: 'Even the most unsexy task can be fun'
 published: false
-slug: 2024-03-xxx-find-the-joy-in-unsexy-tasks
-publishedDate: '2024-03-xx'
+slug: 2024-03-992-find-the-joy-in-unsexy-tasks
+publishedDate: '2024-03-992'
 ---
 
 I see many people get frustrated that work puts them on boring or unsexy tasks. They think that programming is only fun if you decide what you get to work on. I think this is problematic. One of the best skills I acquired over my career was finding the joy in any unsexy domain or task I was given.

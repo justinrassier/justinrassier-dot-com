@@ -2,8 +2,8 @@
 title: A Simple Trick for Tinkering in Neovim
 description: 'How to easily create things in Neovim and get fast feedback'
 published: false
-slug: 2024-03-xx-scratch-your-own-itch
-publishedDate: '2024-03-xx'
+slug: 2024-03-991-scratch-your-own-itch
+publishedDate: '2024-03-991'
 ---
 
 Adding little bits of custom functionality to my Neovim life is one of my favorite things to do. It's just so dang satisfying. Slamming together a little Lua snippet is easy, but the feedback look of saving, closing Neovim, opening it, and testing it is pretty tedious. Here is a simple trick I use to to iterate faster.
