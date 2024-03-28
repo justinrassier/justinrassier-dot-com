@@ -6,7 +6,7 @@ slug: 2024-03-20-a-simple-trick-for-tinkering-in-neovim
 publishedDate: '2024-03-20'
 ---
 
-Adding little bits of custom functionality to my Neovim life is one of my favorite things to do. It's just so dang satisfying. Slamming together a little Lua snippet is easy, but the feedback look of saving, closing Neovim, opening it, and testing it is pretty tedious. Here is a simple trick I use to to iterate faster.
+Adding little bits of custom functionality to my Neovim life is one of my favorite things to do. It's just so dang satisfying. Slamming together a little Lua snippet is easy, but the feedback loop of saving, closing Neovim, opening it, and testing it is pretty tedious. Here is a simple trick I use to to iterate faster.
 
 First I created a file inside of my Neovim config `lua/jr/custom/playground.lua`
 
