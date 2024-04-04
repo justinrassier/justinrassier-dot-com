@@ -13,8 +13,6 @@ export default defineConfig(({ mode }) => {
 
     build: {
       outDir: '../../dist/apps/blog/client',
-      reportCompressedSize: true,
-      commonjsOptions: { transformMixedEsModules: true },
       target: ['es2020'],
     },
     plugins: [
