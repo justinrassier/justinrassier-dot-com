@@ -8,7 +8,7 @@ publishedDate: '2024-04-17'
 
 Back in the dark days when I used VS Code ;) I loved the [CodeSnap](https://marketplace.visualstudio.com/items?itemName=adpyke.codesnap) extension. It was a super simple plugin that could take your highlighted code and quickly turn it into a nice looking image. Moving to Neovim, I missed this feature. Then I saw the [Charm.sh](https://charm.sh/) folks created a super cool new CLI tool called [Freeze](https://github.com/charmbracelet/freeze)
 
-So instead of continuing to feeling sad about missing CodeSnap, I thought I could throw together a few lines of Lua and make my own. Hopefully seeing how simple it is to do something like this can give you your own inspiration to make your own little extensions to Neovim.
+So instead of continuing to feeling sad about missing CodeSnap, I thought I could throw together a few lines of Lua and make my own. Hopefully seeing how simple it is to do something like this can give you your own inspiration to make your own little extensions for Neovim.
 
 ```lua
 -- I always like to prefix my commands with JR so I can easily find them
