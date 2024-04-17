@@ -13,17 +13,17 @@ So instead of continuing to feeling sad about missing CodeSnap, I thought I coul
 ```lua
 -- I always like to prefix my commands with JR so I can easily find them
 vim.api.nvim_create_user_command("JRFreeze", function()
-  -- snag the file type from the buffer
+	-- snag the file type from the buffer
 	local file_type = vim.bo.filetype
 
-  -- get the text from the visual selection as a table
+	-- get the text from the visual selection as a table
 	local text = vim.fn.getline(vim.fn.getpos("'<")[2], vim.fn.getpos("'>")[2])
 
-  -- join it together into one string
+	-- join it together into one string
 	local full_text = table.concat(text, "\n")
 
 	-- write the file to /tmp/freeze...probably could find a better place to put this so it's
-  -- cross platform, but it works for me ¯\_(ツ)_/¯
+	-- cross platform, but it works for me ¯\_(ツ)_/¯
 	local file = io.open("/tmp/freeze", "w")
 	if file == nil then
 		print("could not open file")
@@ -38,10 +38,10 @@ vim.api.nvim_create_user_command("JRFreeze", function()
 	--  This is the tricky bit. Use apple script to copy the image to the clipboard
 	vim.fn.system("osascript -e 'set the clipboard to (read (POSIX file \"/tmp/freeze.png\") as TIFF picture)'")
 
-  -- notify the user that the image has been copied to the clipboard
+	-- notify the user that the image has been copied to the clipboard
 	vim.notify("Image copied to clipboard", vim.log.levels.INFO)
 end, {
-  -- make sure the command is only available in visual mode
+	-- make sure the command is only available in visual mode
 	range = true,
 })
 
