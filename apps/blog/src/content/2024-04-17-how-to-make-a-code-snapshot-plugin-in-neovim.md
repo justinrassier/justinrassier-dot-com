@@ -11,7 +11,7 @@ Back in the dark days when I used VS Code ;) I loved the [CodeSnap](https://mark
 So instead of continuing to feeling sad about missing CodeSnap, I thought I could throw together a few lines of Lua and make my own. Hopefully seeing how simple it is to do something like this can give you your own inspiration to make your own little extensions to Neovim.
 
 ```lua
--- give the command a name. I always like to prefix my commands with JR so I can easily find them
+-- I always like to prefix my commands with JR so I can easily find them
 vim.api.nvim_create_user_command("JRFreeze", function()
   -- snag the file type from the buffer
 	local file_type = vim.bo.filetype
@@ -41,6 +41,7 @@ vim.api.nvim_create_user_command("JRFreeze", function()
   -- notify the user that the image has been copied to the clipboard
 	vim.notify("Image copied to clipboard", vim.log.levels.INFO)
 end, {
+  -- make sure the command is only available in visual mode
 	range = true,
 })
 
