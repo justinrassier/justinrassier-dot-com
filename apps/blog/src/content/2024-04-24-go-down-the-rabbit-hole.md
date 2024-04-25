@@ -1,8 +1,8 @@
 ---
-title: Follow the Rabbit Hole
-description: 'Follow the Rabbit hole as far as it takes you to solve the problem at hand'
+title: Go Down the Rabbit Hole
+description: 'Go down the Rabbit hole as far as it takes you to solve the problem at hand'
 published: true
-slug: 2024-04-24-follow-thre-rabbit-hole
+slug: 2024-04-24-go-down-the-rabbit-hole
 publishedDate: '2024-04-24'
 ---
 
@@ -16,6 +16,6 @@ It looked like messages were being being handled out of order from an SQS queue 
 
 It turns out that was a red herring, but that debugging led to me finding the real issue, a bug in ML Python code wasn't properly reporting its status back to our Go document processing service. Time to get my Python on.
 
-I'm a full stack developer at heart, but I've spent the last several years pretty much exclusively on the frontend. I think there is a lot of benefits to specializing in a slice of a tech stack if you have the luxury to do so. But there is something unbelievably rewarding to being able to follow the rabbit hole as deep as you need to go to solve a problem; such as tracing SQS queue messages in concurrent Go to find a Python bug all so you can show a simple progress bar in the browser.
+I'm a full stack developer at heart, but I've spent the last several years pretty much exclusively on the frontend. I think there is a lot of benefits to specializing in a slice of a tech stack if you have the luxury to do so. But there is something unbelievably rewarding to being able to go down the rabbit hole as deep as you need to go to solve a problem; such as tracing SQS queue messages in concurrent Go to find a Python bug all so you can show a simple progress bar in the browser.
 
 Man I love what I do.
